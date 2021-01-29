@@ -3,7 +3,7 @@
 ## Usage
 
 
-Example usage with dynamo db app. Policy for all dbs and logs in Account.
+Example usage with dynamo db app. Policy for all tables and logs in Account.
 
 ```
 resource "aws_iam_policy" "dynamodbPolicy" {
