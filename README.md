@@ -1,7 +1,7 @@
 # lambda-http-native
 
-Usage
-===
+## Usage
+
 
 Example usage with dynamo db app. Policy for all dbs and logs in Account.
 
