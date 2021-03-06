@@ -1,4 +1,4 @@
-resource "aws_lambda_function" "example" {
+resource "aws_lambda_function" "lambda" {
   function_name = "${var.name}_fun"
   filename = var.package_filename
 
@@ -60,7 +60,7 @@ resource "aws_apigatewayv2_route" "lambda" {
 
 
 resource "aws_apigatewayv2_stage" "lambda" {
-  api_id = aws_apigatewayv2_api.example.id
+  api_id = aws_apigatewayv2_api.lambda.id
   name   = "prod"
 }
 
@@ -70,7 +70,7 @@ resource "aws_apigatewayv2_integration" "lambda" {
   connection_type           = "INTERNET"
   content_handling_strategy = "CONVERT_TO_TEXT"
   integration_method        = "POST"
-  integration_uri           = aws_lambda_function.example.invoke_arn
+  integration_uri           = aws_lambda_function.lambda.invoke_arn
   passthrough_behavior      = "WHEN_NO_MATCH"
 }
   
@@ -79,7 +79,7 @@ resource "aws_apigatewayv2_integration" "lambda" {
 resource "aws_lambda_permission" "apigw" {
   statement_id = "AllowAPIGatewayInvoke"
   action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.example.function_name
+  function_name = aws_lambda_function.lambda.function_name
   principal = "apigateway.amazonaws.com"
 
   # The "/*/*" portion grants access from any method on any resource
