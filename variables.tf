@@ -19,3 +19,13 @@ variable "ram" {
   type = string
   default = "256"
 }
+
+variable "handler" {
+  type = string
+  default = "native.handler"
+}
+
+variable "runtime" {
+  type = string 
+  default = "provided"
+}

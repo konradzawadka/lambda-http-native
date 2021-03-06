@@ -2,8 +2,8 @@ resource "aws_lambda_function" "example" {
   function_name = "${var.name}_fun"
   filename = var.package_filename
 
-  handler = "native.handler"
-  runtime = "provided"
+  handler = var.handler
+  runtime = var.runtime
   role = aws_iam_role.lambda_exec.arn
   memory_size = var.ram
   timeout = "20"
