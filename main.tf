@@ -59,10 +59,6 @@ resource "aws_apigatewayv2_route" "lambda" {
 }
 
 
-resource "aws_apigatewayv2_stage" "lambda" {
-  api_id = aws_apigatewayv2_api.lambda.id
-  name   = "prod"
-}
 
 
 resource "aws_apigatewayv2_stage" "lambda" {
