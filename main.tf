@@ -60,7 +60,7 @@ resource "aws_apigatewayv2_integration" "example" {
 }
 
 resource "aws_apigatewayv2_route" "lambda" {
-  api_id    = aws_apigatewayv2_api.example.id
+  api_id    = aws_apigatewayv2_api.lambda.id
   route_key = "ANY /example/{proxy+}"
 
   target = "integrations/${aws_apigatewayv2_integration.example.id}"
