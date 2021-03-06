@@ -62,6 +62,7 @@ resource "aws_apigatewayv2_route" "lambda" {
 
 
 resource "aws_apigatewayv2_integration" "lambda" {
+  api_id    = aws_apigatewayv2_api.lambda.id
   integration_type = "AWS_PROXY"
   connection_type           = "INTERNET"
   content_handling_strategy = "CONVERT_TO_TEXT"
