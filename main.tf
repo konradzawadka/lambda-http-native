@@ -64,6 +64,12 @@ resource "aws_apigatewayv2_stage" "lambda" {
   name   = "prod"
 }
 
+
+resource "aws_apigatewayv2_stage" "lambda" {
+  api_id = aws_apigatewayv2_api.lambda.id
+  name   = "$default"
+}
+
 resource "aws_apigatewayv2_integration" "lambda" {
   api_id    = aws_apigatewayv2_api.lambda.id
   integration_type = "AWS_PROXY"
