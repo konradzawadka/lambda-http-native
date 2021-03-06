@@ -51,19 +51,11 @@ resource "aws_apigatewayv2_api" "lambda" {
   protocol_type = "HTTP"
 }
 
-resource "aws_apigatewayv2_integration" "example" {
-  api_id           = aws_apigatewayv2_api.lambda.id
-  integration_type = "HTTP_PROXY"
-
-  integration_method = "ANY"
-  integration_uri    = "https://example.com/{proxy}"
-}
-
 resource "aws_apigatewayv2_route" "lambda" {
   api_id    = aws_apigatewayv2_api.lambda.id
   route_key = "ANY /example/{proxy+}"
 
-  target = "integrations/${aws_apigatewayv2_integration.example.id}"
+  target = "integrations/${aws_apigatewayv2_integration.lambda.id}"
 }
 
 
