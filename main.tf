@@ -111,7 +111,7 @@ resource "aws_acm_certificate_validation" "lambda_cert_validation" {
 resource "aws_apigatewayv2_domain_name" "lambda_domain" {
   domain_name = var.domain_name
   domain_name_configuration {
-    certificate_arn = aws_acm_certificate.lambda_cert.arn
+    certificate_arn = aws_acm_certificate_validation.lambda_cert_validation.arn
     endpoint_type   = "REGIONAL"
     security_policy = "TLS_1_2"
   }
