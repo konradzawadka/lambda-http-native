@@ -46,3 +46,7 @@ variable "cors_allow_origins" {
 variable "domain_name" {
   type = string
 }
+
+variable "zone" {
+  type = string
+}

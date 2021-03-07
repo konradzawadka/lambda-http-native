@@ -64,11 +64,54 @@ resource "aws_apigatewayv2_route" "lambda" {
 }
 
 
-resource "aws_apigatewayv2_domain_name" "example" {
-  domain_name = var.domain_name
+# 
+#     CERTIFICATE
+# 
+resource "aws_acm_certificate" "lambda_cert" {
+  domain_name       = var.domain_name
+  validation_method = "DNS"
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
+data "aws_route53_zone" "lambda_zone" {
+  name         = var.zone
+  private_zone = false
+}
+
+resource "aws_route53_record" "lambda_validation_record" {
+  for_each = {
+    for dvo in aws_acm_certificate.lambda_cert.domain_validation_options : dvo.domain_name => {
+      name    = dvo.resource_record_name
+      record  = dvo.resource_record_value
+      type    = dvo.resource_record_type
+      zone_id = dvo.domain_name == data.aws_route53_zone.lambda_zone.zone_id
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = each.value.zone_id
+}
+
+resource "aws_acm_certificate_validation" "lambda_cert_validation" {
+  certificate_arn         = aws_acm_certificate.lambda_cert.arn
+  validation_record_fqdns = [for record in aws_route53_record.lambda_validation_record : record.fqdn]
+}
+
+
+# 
+#   DOMAIN CREATION
+# 
+
+resource "aws_apigatewayv2_domain_name" "lambda_domain" {
+  domain_name = var.domain_name
   domain_name_configuration {
-    certificate_arn = aws_acm_certificate.example.arn
+    certificate_arn = aws_acm_certificate.lambda_cert.arn
     endpoint_type   = "REGIONAL"
     security_policy = "TLS_1_2"
   }
@@ -88,7 +131,11 @@ resource "aws_apigatewayv2_integration" "lambda" {
   integration_uri           = aws_lambda_function.lambda.invoke_arn
 }
   
-
+resource "aws_apigatewayv2_api_mapping" "lambda_mapping" {
+  api_id      = aws_apigatewayv2_api.lambda.id
+  domain_name = aws_apigatewayv2_domain_name.lambda_domian.id
+  stage       = aws_apigatewayv2_stage.lambda.id
+}
 
 resource "aws_lambda_permission" "apigw" {
   statement_id = "AllowAPIGatewayInvoke"
@@ -96,7 +143,5 @@ resource "aws_lambda_permission" "apigw" {
   function_name = aws_lambda_function.lambda.function_name
   principal = "apigateway.amazonaws.com"
 
-  # The "/*/*" portion grants access from any method on any resource
-  # within the API Gateway REST API.
   source_arn = "${aws_apigatewayv2_api.lambda.execution_arn}/*/*"
 }
