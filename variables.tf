@@ -32,15 +32,15 @@ variable "runtime" {
 
 
 variable "cors_allow_methods" {
-  type = array(string)
+  type = list(string)
 }
 
 variable "cors_allow_headers" {
-  type = array(string)
+  type = list(string)
 }
 
 variable "cors_allow_origins" {
-  type = array(string)
+  type = list(string)
 }
 
 variable "domain_name" {
