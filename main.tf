@@ -133,7 +133,7 @@ resource "aws_apigatewayv2_integration" "lambda" {
   
 resource "aws_apigatewayv2_api_mapping" "lambda_mapping" {
   api_id      = aws_apigatewayv2_api.lambda.id
-  domain_name = aws_apigatewayv2_domain_name.lambda_domian.id
+  domain_name = aws_apigatewayv2_domain_name.lambda_domain.id
   stage       = aws_apigatewayv2_stage.lambda.id
 }
 

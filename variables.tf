@@ -33,10 +33,12 @@ variable "runtime" {
 
 variable "cors_allow_methods" {
   type = list(string)
+  default = ["*"]
 }
 
 variable "cors_allow_headers" {
   type = list(string)
+  default = ["*"]
 }
 
 variable "cors_allow_origins" {
