@@ -49,6 +49,11 @@ resource "aws_iam_role_policy_attachment" "lambda_policy-attachment" {
 resource "aws_apigatewayv2_api" "lambda" {
   name          = var.name
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_headers = var.cors_allow_headers
+    allow_origins = var.cors_allow_origins
+    allow_methods = var.cors_allow_methods
+  }
 }
 
 resource "aws_apigatewayv2_route" "lambda" {
@@ -59,7 +64,15 @@ resource "aws_apigatewayv2_route" "lambda" {
 }
 
 
+resource "aws_apigatewayv2_domain_name" "example" {
+  domain_name = var.domain_name
 
+  domain_name_configuration {
+    certificate_arn = aws_acm_certificate.example.arn
+    endpoint_type   = "REGIONAL"
+    security_policy = "TLS_1_2"
+  }
+}
 
 resource "aws_apigatewayv2_stage" "lambda" {
   api_id = aws_apigatewayv2_api.lambda.id

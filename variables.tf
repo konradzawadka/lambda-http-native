@@ -29,3 +29,20 @@ variable "runtime" {
   type = string 
   default = "provided"
 }
+
+
+variable "cors_allow_methods" {
+  type = array(string)
+}
+
+variable "cors_allow_headers" {
+  type = array(string)
+}
+
+variable "cors_allow_origins" {
+  type = array(string)
+}
+
+variable "domain_name" {
+  type = string
+}
