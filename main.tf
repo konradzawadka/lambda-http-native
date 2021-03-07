@@ -86,7 +86,7 @@ resource "aws_route53_record" "lambda_validation_record" {
       name    = dvo.resource_record_name
       record  = dvo.resource_record_value
       type    = dvo.resource_record_type
-      zone_id = dvo.domain_name == data.aws_route53_zone.lambda_zone.zone_id
+      zone_id = data.aws_route53_zone.lambda_zone.zone_id
     }
   }
 
