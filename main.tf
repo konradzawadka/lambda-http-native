@@ -1,7 +1,8 @@
 resource "aws_lambda_function" "lambda" {
   function_name = "${var.name}_fun"
   filename = var.package_filename
-
+  source_code_hash = filebase64sha256(var.package_filename)
+  
   handler = var.handler
   runtime = var.runtime
   role = aws_iam_role.lambda_exec.arn
