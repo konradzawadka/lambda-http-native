@@ -121,7 +121,7 @@ resource "aws_apigatewayv2_domain_name" "lambda_domain" {
 resource "aws_route53_record" "app_cname_record" {
   name    = aws_apigatewayv2_domain_name.lambda_domain.domain_name
   type    = "A"
-  zone_id = aws_route53_zone.lambda_zone.zone_id
+  zone_id =  data.aws_route53_zone.lambda_zone.zone_id
 
   alias {
     name                   = aws_apigatewayv2_domain_name.lambda_domain.domain_name_configuration[0].target_domain_name
