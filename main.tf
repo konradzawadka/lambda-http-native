@@ -118,6 +118,19 @@ resource "aws_apigatewayv2_domain_name" "lambda_domain" {
   }
 }
 
+resource "aws_route53_record" "example" {
+  name    = aws_apigatewayv2_domain_name.lambda_domain.domain_name
+  type    = "A"
+  zone_id = lambda_zone.example.zone_id
+
+  alias {
+    name                   = aws_apigatewayv2_domain_name.lambda_domain.domain_name_configuration[0].target_domain_name
+    zone_id                = aws_apigatewayv2_domain_name.lambda_domain.domain_name_configuration[0].hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+  
+  
 resource "aws_apigatewayv2_stage" "lambda" {
   api_id = aws_apigatewayv2_api.lambda.id
   name   = "$default"
