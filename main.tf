@@ -16,7 +16,7 @@ resource "aws_lambda_function" "lambda" {
 # IAM role which dictates what other AWS services the Lambda function
 # may access.
 resource "aws_iam_role" "lambda_exec" {
-  name = "${var.name}_role"
+  name = "${var.name}_${var.env}_role"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -48,7 +48,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy-attachment" {
 }
 
 resource "aws_apigatewayv2_api" "lambda" {
-  name          = var.name
+  name          = "${var.name}_${var.env}"
   protocol_type = "HTTP"
   cors_configuration {
     allow_headers = var.cors_allow_headers
@@ -60,7 +60,6 @@ resource "aws_apigatewayv2_api" "lambda" {
 resource "aws_apigatewayv2_route" "lambda" {
   api_id    = aws_apigatewayv2_api.lambda.id
   route_key = "ANY /{proxy+}"
-
   target = "integrations/${aws_apigatewayv2_integration.lambda.id}"
 }
 
