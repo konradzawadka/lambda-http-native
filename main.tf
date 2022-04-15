@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "lambda" {
-  function_name = "${var.name}_fun"
+  function_name = "${var.name}_${var.env}_fun"
   filename = var.package_filename
   source_code_hash = filebase64sha256(var.package_filename)
   
