@@ -2,6 +2,10 @@ variable "name" {
   type = string
 }
 
+variable "env" {
+  type = string
+}
+
 variable "package_filename" {
   type = string
   default = "./target/function.zip"
